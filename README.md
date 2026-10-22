@@ -31,7 +31,7 @@ go run -race .
 - точний замір часу через `time.Now()` / `time.Since()`;
 - послідовний прогін по списку з 5 адрес, серед яких одна завідомо неіснуюча.
 
-![Рівень 1](screenshots/Screenshot_2026-10-22_180358.png)
+![Рівень 1](screenshots/Screenshot%202026-10-22%20180358.png)
 
 ### Рівень 2. Конкурентний: горутини, WaitGroup, Mutex
 
@@ -40,7 +40,7 @@ go run -race .
 - `sync.WaitGroup`: `Add(1)` до запуску горутини, `defer Done()` всередині;
 - спільна статистика захищена `sync.Mutex`.
 
-![Рівень 2](screenshots/Screenshot_2026-10-22_181617.png)
+![Рівень 2](screenshots/Screenshot%202026-10-22%20181617.png)
 
 ### Рівень 3. Просунутий: канали
 
@@ -51,7 +51,7 @@ go run -race .
 
 Запуск фінальної версії з `-race`, попереджень `WARNING: DATA RACE` немає:
 
-![Рівень 3](screenshots/Screenshot_2026-10-22_184013.png)
+![Рівень 3](screenshots/Screenshot%202026-10-22%20184013.png)
 
 ## Результат порівняння швидкодії
 
