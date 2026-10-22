@@ -48,22 +48,26 @@ func runSequential(c Checker, urls []string) (Summary, time.Duration) {
 }
 func runConcurrent(c Checker, urls []string) (Summary, time.Duration) {
 	start := time.Now()
-	var (
-		wg    sync.WaitGroup
-		stats SafeStats
-	)
+	results := make(chan Result, len(urls))
+	var wg sync.WaitGroup
+
 	for _, u := range urls {
 		wg.Add(1)
 		go func(url string) {
 			defer wg.Done()
-
-			res := c.Check(url)
-			fmt.Println(res)
-			stats.Record(res)
+			results <- c.Check(url)
 		}(u)
 	}
-	wg.Wait()
-	return stats.Summary(), time.Since(start)
+	go func() {
+		wg.Wait()
+		close(results)
+	}()
+	var summary Summary
+	for res := range results {
+		fmt.Println(res)
+		summary.Record(res)
+	}
+	return summary, time.Since(start)
 }
 func printReport(s Summary, sequential, concurrent time.Duration) {
 	separator := strings.Repeat("=", separatorWidth)
